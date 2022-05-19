@@ -3,7 +3,7 @@ import { load } from "cheerio";
 
 import { Question } from "../types/question";
 import { getQueId } from "../utils/getQueID";
-import { seedURLS } from "../index";
+import { seedURLS, map, scrapedQue } from "../index";
 
 // getQuestions fetches the questions
 // present on a stackoverflow question page
@@ -24,6 +24,7 @@ export const getQuestions = async (url: string) => {
 // stackoverflow question's page
 export const crawlQuestion = async (url: string): Promise<Question | null> => {
 	url = "https://stackoverflow.com" + url;
+	console.log("crawling: ", url);
 	try {
 		const { data } = await axios.get(url);
 		const $ = load(data, {
@@ -48,12 +49,15 @@ export const crawlQuestion = async (url: string): Promise<Question | null> => {
 			url: url,
 			queId: getQueId(url)
 		};
+		map.set(question.queId, map.get(question.queId) + 1 || 1);
 
 		// linked questions links
 		const linkedQue = $(".question-hyperlink", ".module.sidebar-linked");
 		linkedQue.each((_i, el) => {
 			const link = $(el).prop("href");
 			seedURLS.push(link);
+			const queId = getQueId(link);
+			map.set(queId, map.get(queId) + 1 || 1);
 		});
 
 		// related questions links
@@ -61,9 +65,11 @@ export const crawlQuestion = async (url: string): Promise<Question | null> => {
 		relatedQue.each((_i, el) => {
 			const link = $(el).prop("href");
 			seedURLS.push(link);
+			const queId = getQueId(link);
+			map.set(queId, map.get(queId) + 1 || 1);
 		});
 
-		// TODO: Update reference count
+		scrapedQue.push(question);
 		return question;
 	} catch (err) {
 		console.error(err);
