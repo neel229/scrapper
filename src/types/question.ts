@@ -5,4 +5,8 @@ export type Question = {
   upvotes: string;
   answerCount: string;
   url: string;
+
+  // optional fields
+  queId?: number;
+  referenceCount?: number;
 };
