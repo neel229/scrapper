@@ -2,7 +2,6 @@ import axios from "axios";
 import { load } from "cheerio";
 
 import { Question } from "../types/question";
-import { checkURL } from "../utils/checkURL";
 import { getQueId } from "../utils/getQueID";
 import { seedURLS } from "../index";
 
@@ -50,33 +49,18 @@ export const crawlQuestion = async (url: string): Promise<Question | null> => {
 			queId: getQueId(url)
 		};
 
-		let map = new Map<number, number>();
 		// linked questions links
 		const linkedQue = $(".question-hyperlink", ".module.sidebar-linked");
 		linkedQue.each((_i, el) => {
 			const link = $(el).prop("href");
-			const queId = getQueId(link);
-			map.set(queId, map.get(queId) + 1 || 1);
+			seedURLS.push(link);
 		});
 
 		// related questions links
 		const relatedQue = $(".question-hyperlink", ".module.sidebar-related");
 		relatedQue.each((_i, el) => {
 			const link = $(el).prop("href");
-			const queId = getQueId(link);
-			map.set(queId, map.get(queId) + 1 || 1);
-		});
-
-		// links shared in answers and comments
-		const links = $("a");
-		links.each((_i, el) => {
-			// check if the link is a valid
-			// question url
-			const link = $(el).prop("href");
-			if (checkURL(link) === true) {
-				const queId = getQueId(link);
-				map.set(queId, map.get(queId) + 1 || 1);
-			}
+			seedURLS.push(link);
 		});
 
 		// TODO: Update reference count
