@@ -1,12 +1,12 @@
 // Question contains the metadata
 // of a stackoverflow question
 export type Question = {
-  title: string;
-  upvotes: string;
-  answerCount: string;
-  url: string;
+	title: string;
+	upvotes: string;
+	answerCount: string;
+	url: string;
 
-  // optional fields
-  queId?: number;
-  referenceCount?: number;
+	// optional fields
+	queId?: number;
+	referenceCount?: number;
 };

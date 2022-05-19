@@ -1,29 +1,32 @@
 {
-  "name": "assignment",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "neel229 <device.neel@gmail.com>",
-  "license": "MIT",
-  "scripts": {
-    "start": "node dist/index.js",
-    "build": "webpack",
-    "dev": "ts-node src/index.ts",
-    "test": "jest"
-  },
-  "devDependencies": {
-    "@types/jest": "^27.5.1",
-    "jest": "^28.1.0",
-    "ts-jest": "^28.0.2",
-    "ts-loader": "^9.3.0",
-    "ts-node": "^10.7.0",
-    "typescript": "^4.6.4",
-    "webpack": "^5.72.1",
-    "webpack-cli": "^4.9.2"
-  },
-  "dependencies": {
-    "axios": "^0.27.2",
-    "cheerio": "^1.0.0-rc.10",
-    "dotenv": "^16.0.1",
-    "mongoose": "^6.3.3"
-  }
+	"name": "assignment",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "neel229 <device.neel@gmail.com>",
+	"license": "MIT",
+	"scripts": {
+		"start": "node dist/index.js",
+		"build": "webpack",
+		"dev": "ts-node src/index.ts",
+		"test": "jest"
+	},
+	"devDependencies": {
+		"@types/jest": "^27.5.1",
+		"@types/yargs": "^17.0.10",
+		"jest": "^28.1.0",
+		"prettier": "2.6.2",
+		"ts-jest": "^28.0.2",
+		"ts-loader": "^9.3.0",
+		"ts-node": "^10.7.0",
+		"typescript": "^4.6.4",
+		"webpack": "^5.72.1",
+		"webpack-cli": "^4.9.2"
+	},
+	"dependencies": {
+		"axios": "^0.27.2",
+		"cheerio": "^1.0.0-rc.10",
+		"dotenv": "^16.0.1",
+		"mongoose": "^6.3.3",
+		"yargs": "^17.5.1"
+	}
 }
