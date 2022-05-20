@@ -6,28 +6,28 @@ config();
 import { onExit } from "./controllers/onExit";
 import { getQuestions, crawlQuestion } from "./controllers/scrape";
 import { Question } from "./types/question";
+import { Semaphore } from "async-mutex";
 
-// step 1) get question urls to start crawling
 export let seedURLS: string[] = [];
 export let map = new Map<number, number>();
 export let scrapedQue: Question[] = [];
 
 const start = async () => {
+	// step 1) get question urls to start crawling
 	for (let i = 0; i < 3; i++) {
 		const url = `https://stackoverflow.com/questions?tab=newest&page=${i}`;
 		await getQuestions(url);
 	}
 	console.log("questions populated...");
 
-	const recursiveCrawl = async () => {
-		if (seedURLS.length === 0) {
-			return;
-		}
-		await crawlQuestion(seedURLS[seedURLS.length - 1]);
-		seedURLS.pop();
-		recursiveCrawl();
-	};
-	await recursiveCrawl();
+	// step 2) start recursively crawling the populated
+	// seed questions array
+	const s = new Semaphore(5);
+	await Promise.all(
+		seedURLS.map((question) => {
+			s.runExclusive(() => crawlQuestion(question));
+		})
+	);
 };
 
 // start mongodb conn
@@ -47,4 +47,6 @@ const start = async () => {
 
 start();
 
+// when the script is killed, call the onExit
+// handler function
 process.on("SIGINT", onExit.bind(null));
