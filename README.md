@@ -1,4 +1,4 @@
-# Airtribe Backend Assignment
+# Stackoverflow Questions Scrapper
 
 ### About
 This project includes a web scraper which crawls over stack overflow questions and scrape metadata of each question.
